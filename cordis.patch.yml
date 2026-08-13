@@ -1,0 +1,18 @@
+# dsh-routines bundle layer: mounts the routine store, the scheduler, and the
+# `dsh routines` command line into the profile that installs this bundle.
+#
+# The scheduler ticks on a timer and launches each due routine through the
+# headless runner as its own one-shot session. Install this bundle into the
+# profile you run `dsh routines ...` from (and keep that profile alive with
+# `dsh --profile <name>` for schedules to fire). See README.md.
+- insert:
+    - id: routines-store
+      name: '@dsh-routines/bundle/store'
+
+    - id: routines-scheduler
+      name: '@dsh-routines/bundle/scheduler'
+      inject: [routines]
+
+    - id: routines-cli
+      name: '@dsh-routines/bundle/cli'
+      inject: [routines, routinesScheduler]
