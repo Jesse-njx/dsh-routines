@@ -1,0 +1,39 @@
+dsh-routines — 60-second promo · narration
+==========================================
+Read aloud while advancing slides. Total ≈ 1 minute (about 8 seconds
+per slide). Advance on the slide marker.
+
+[S1 · 0:00–0:08 · title]
+Meet dsh-routines: scheduled agents for DeepSeek Harness.
+You write a prompt, pick a schedule, and DSH runs it for you — while you sleep.
+
+[S2 · 0:08–0:16 · a routine is one YAML file]
+A routine is one tiny YAML file.
+A prompt, a cron schedule, a timezone, and where the digest should land.
+Human-readable, git-committable — your automation lives right in your repo.
+
+[S3 · 0:16–0:24 · why you want it]
+Nightly test triage, morning briefs, dependency checks —
+the chores you would run at two a.m., if you were awake.
+And when your laptop was asleep? One honest catch-up run on wake.
+No backlog replay, ever.
+
+[S4 · 0:24–0:32 · how it works]
+Here's the loop: the scheduler watches your routines,
+launches each run as its own headless session — full audit log —
+and leaves you a digest. Status, duration, session id, everything.
+
+[S5 · 0:32–0:40 · in the terminal]
+Manage it all from the terminal.
+List what's scheduled, run one right now, pause it, check the logs.
+
+[S6 · 0:40–0:48 · safety]
+It runs unattended, so safety comes first:
+anything that would prompt gets auto-denied and noted right in the digest.
+Hard timeouts, no silent escalation —
+a wedged two-a.m. agent can't hold your repo at nine.
+
+[S7 · 0:48–0:56 · get it]
+One command and it's yours.
+Add dsh-routines to your profile, and from tonight —
+run a prompt on a cron, get the digest where you already are.

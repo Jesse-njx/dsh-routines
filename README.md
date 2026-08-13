@@ -151,6 +151,10 @@ pnpm test       # node --test (46 tests: cron, scheduler matrix, store, run, cli
 
 The e2e test boots a real `dsh` subprocess against a scripted mock LLM adapter (no network, no credentials) in a throwaway `DSH_HOME`, so the whole pipeline — store → scheduler → jobs → subprocess → run driver → digest → record — is exercised in CI.
 
+## Promo
+
+`promo/` holds a self-contained 60-second promo deck for screen recording: `slideshow.html` (keyboard-advanceable, 1280×720, no external assets) and `narration.txt` (a timed read-aloud script). Open `slideshow.html` and press `→`/`space` to advance.
+
 ## Non-goals
 
 Cloud execution (local machine only; the missed-run policy handles an asleep laptop honestly), routine marketplaces, sub-minute schedules.
