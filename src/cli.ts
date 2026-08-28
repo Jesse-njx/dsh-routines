@@ -50,6 +50,14 @@ function buildProgram(ctx: Context): Command {
   const program = new Command()
     .name('dsh routines')
     .description('Manage scheduled routines: list, run, pause, resume, logs')
+    // dsh-cmdline hands every co-mounted app plugin the same shared argv
+    // snapshot, so when `dsh web --host/--port/--trusted-host` runs in a
+    // profile that also has routines-cli, those flags reach this program.
+    // Without allowUnknownOption commander aborts with "unknown option '--host'"
+    // and kills the whole `dsh web` startup. Ignore unknown options instead;
+    // genuine unknown subcommands (e.g. `bogus`) still fail as excess
+    // arguments. See issues #1 and #2.
+    .allowUnknownOption(true)
     .helpOption('-h, --help', 'show this help')
     .addHelpText('after', `
 Examples:
@@ -245,7 +253,19 @@ export function apply(ctx: Context): void {
     throw new Error('routines-cli: the launcher must provide ctx.cmdlineArgs and ctx.appExit before the tree mounts')
   }
   const raw = cmdline.get()
-  const args = raw[0] === 'routines' ? raw.slice(1) : raw
+  const hadRoutinesToken = raw[0] === 'routines'
+  const args = hadRoutinesToken ? raw.slice(1) : raw
+  // dsh-cmdline hands every co-mounted app plugin the same shared argv
+  // snapshot. When this bundle is installed in a profile that also runs another
+  // app (e.g. the `web` profile: `dsh web --host/--port/--trusted-host`), that
+  // app's flags land here. If the user did NOT explicitly type `routines` and
+  // the first token is an option (`-…`), the snapshot belongs to that other app
+  // — don't hijack it (parsing would reject its flags and kill startup). An
+  // explicit `routines` token still routes `--help`/`-h` here; bare
+  // subcommands (list/run/… and typos like `bogus`) still parse normally.
+  // See issues #1 and #2.
+  const firstToken = args[0]
+  if (!hadRoutinesToken && firstToken !== undefined && firstToken.startsWith('-')) return
   const program = buildProgram(ctx)
   configureExitAndOutput(program)
   try {

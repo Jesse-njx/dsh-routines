@@ -174,3 +174,13 @@ test('cli: unknown subcommand exits nonzero', () => {
   const h = setup(['bogus'], [])
   assert.deepEqual(h.exitCodes, [1])
 })
+
+test('cli: foreign app flags (dsh web --host/--port) do not crash startup (issues #1, #2)', () => {
+  out.length = 0
+  err.length = 0
+  const h = setup(['--host', '127.0.0.1', '--port', '3080', '--trusted-host', '172.31.250.2:3080'], [makeRoutine('nightly')])
+  // The shared argv snapshot carries another app's flags; routines-cli must
+  // ignore them (no exit, no "unknown option" error) instead of killing boot.
+  assert.deepEqual(h.exitCodes, [])
+  assert.doesNotMatch(err.join(''), /unknown option/)
+})
